@@ -1,6 +1,6 @@
 package canard;
 
-abstract class Canard {
+public abstract class Canard {
 
     protected String nom;
 
@@ -39,7 +39,7 @@ abstract class Canard {
     }
 
     public int attaquer(Canard canardEnnemi) {
-        return attaque;
+        return (int) (attaque * TypeCanard.getMultiplicateur(type, canardEnnemi.getType()));
     }
 
     public void subirDegats(int degats) {
