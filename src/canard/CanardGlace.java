@@ -17,10 +17,10 @@ public class CanardGlace extends Canard {
     @Override
     public void capaciteSpeciale(Canard cible) {
         if (ppCapacite == 0) {
-            System.out.println(nom + "n'a plus de point de pouvoir, il n'a pas pu utiliser sa capacité spéciale");
+            System.out.println(nom + " n'a plus de point de pouvoir, il n'a pas pu utiliser sa capacité spéciale");
         } else {
             appliquerEffet(cible, Statut.GEL);
-            System.out.println(nom + " est gelé");
+            System.out.println(cible.getNom() + " est gelé");
             ppCapacite--;
         }
     }

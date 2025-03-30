@@ -38,8 +38,20 @@ public abstract class Canard {
         return attaque;
     }
 
+    public int getPpAttaque() {
+        return ppAttaque;
+    }
+
+    public int getPpCapacite() {
+        return ppCapacite;
+    }
+
     public int getVitesse() {
         return vitesse;
+    }
+
+    public int getDureeStatut() {
+        return dureeStatut;
     }
 
     public Statut getStatut() {
@@ -76,4 +88,8 @@ public abstract class Canard {
     }
 
     public abstract void capaciteSpeciale(Canard cible);
+
+    public void setDureeStatut(int duree) {
+        this.dureeStatut = duree;
+    }
 }

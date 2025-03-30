@@ -190,32 +190,33 @@ public class Main {
 
     private static void executerAction(Canard attaquant, Canard cible, int action) {
         boolean actionOk = true;
+        int dureeStatut = attaquant.getDureeStatut();
         switch (attaquant.getStatut()) {
             case GEL:
-                if (attaquant.getStatut().duree == 0) {
+                if (dureeStatut == 0) {
                     System.out.println(attaquant.getNom() + " n'est plus gelé");
                     attaquant.appliquerEffet(attaquant, Statut.AUCUN);
                 } else {
                     actionOk = false;
-                    attaquant.getStatut().duree--;
+                    attaquant.setDureeStatut(dureeStatut - 1);
                     System.out.println(attaquant.getNom() + " est gelé, il n'a pas pu attaquer");
                 }
                 break;
-            case BRULE:
-                if (attaquant.getStatut().duree == 0) {
+            case BRULURE:
+                if (dureeStatut == 0) {
                     System.out.println(attaquant.getNom() + " n'est plus brulé");
                     attaquant.appliquerEffet(attaquant, Statut.AUCUN);
                 } else {
-                    attaquant.getStatut().duree--;
+                    attaquant.setDureeStatut(dureeStatut - 1);
                     attaquant.subirDegats(10);
-                    System.out.println(attaquant.getNom() + " est brulé, il subit des dégâts");
+                    System.out.println(attaquant.getNom() + " souffre de brûlure");
                 }
-            case PARALISE:
-                if (attaquant.getStatut().duree == 0) {
+            case PARALYSIE:
+                if (dureeStatut == 0) {
                     System.out.println(attaquant.getNom() + " n'est plus paralysé");
                     attaquant.appliquerEffet(attaquant, Statut.AUCUN);
                 } else {
-                    attaquant.getStatut().duree--;
+                    attaquant.setDureeStatut(dureeStatut - 1);
                     if (Math.random() < 0.5) {
                         actionOk = false;
                         System.out.println(attaquant.getNom() + " est paralysé, il n'a pas pu attaquer");
@@ -243,8 +244,10 @@ public class Main {
 
     private static void afficherEtat(Canard canard1, Canard canard2) {
         System.out.println("\nEtat des canards :");
-        System.out.println(canard1.getNom() + " - PV: " + canard1.getPv());
-        System.out.println(canard2.getNom() + " - PV: " + canard2.getPv());
+        System.out.println(canard1.getNom() + " - PV: " + canard1.getPv() + ", Attaque : " + canard1.getPpAttaque()
+                + " PP, Capacité spéciale : " + canard1.getPpCapacite());
+        System.out.println(canard2.getNom() + " - PV: " + canard2.getPv() + ", Attaque : " + canard2.getPpAttaque()
+                + " PP, Capacité spéciale : " + canard2.getPpCapacite());
         System.out.println("--------------------------");
     }
 

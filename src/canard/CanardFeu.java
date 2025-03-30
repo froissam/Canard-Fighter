@@ -17,7 +17,7 @@ public class CanardFeu extends Canard {
     @Override
     public void capaciteSpeciale(Canard cible) {
         if (ppCapacite == 0) {
-            System.out.println(nom + "n'a plus de point de pouvoir, il n'a pas pu utiliser sa capacité spéciale");
+            System.out.println(nom + " n'a plus de point de pouvoir, il n'a pas pu utiliser sa capacité spéciale");
         } else {
             System.out.println(nom + " lance une attaque surpuissante");
             int degats = attaquer(cible) + 20;
