@@ -10,6 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
 
+        /* Liste de canards créés par défaut pour pouvoir lancer des combats plus vite */
         canardList.add(new CanardEau("Canardo", 100, 20, 110));
         canardList.add(new CanardFeu("Confit", 80, 30, 130));
         canardList.add(new CanardGlace("Glaglanard", 90, 25, 100));
@@ -44,7 +45,7 @@ public class Main {
                     }
                     break;
                 case 3:
-                    System.out.println("Merci d'avoir joué");
+                    System.out.println("Merci d'avoir joué !");
                     break;
             }
         }
@@ -52,6 +53,11 @@ public class Main {
         scanner.close();
     }
 
+    /**
+     * Demande les différents attributs d'un canard (nom, pv, attaque, vitesse, type)
+     * crée un canard correspondant à ces attributs et l'ajoute à la liste de canards
+     * pour qu'il soit sélectionnable dans les combats.
+     */
     private static void CreerCanard() {
         Scanner scanner = new Scanner(System.in);
 
@@ -105,9 +111,20 @@ public class Main {
                 CanardVent canardVent = new CanardVent(nom, pv, attaque, vitesse);
                 canardList.add(canardVent);
                 break;
+            case 5:
+                CanardElectrique canardElectrique = new CanardElectrique(nom, pv, attaque, vitesse);
+                canardList.add(canardElectrique);
+                break;
         }
     }
 
+    /**
+     * Affiche la liste de canards et demande d'en sélectionner 2 pour faire une bataille
+     * Une fois les canards sélectionnés, lance une bataille en demandant les actions à effectuer
+     * pour chaques canards et execute ces actions (en fonction de la vitesse, des status et des PP restant des canards)
+     * Quand les points de vie d'un canard tombent à 0, le combat est fini et son adversaire remporte la bataille
+     * A la fin du combat, réinitialise les canards pour qu'ils puissent être re-sélectionnés pour d'autres combats
+     */
     private static void Bataille() {
         Scanner scanner = new Scanner(System.in);
         int indexCanard1 = -1;
@@ -194,6 +211,13 @@ public class Main {
         canard2.reinitialisation();
     }
 
+    /**
+     * Vérifie le statut du canard attaquant et en fonction execute
+     * l'action choisie et/ou applique les effets du statut
+     * @param attaquant le canard attaquant
+     * @param cible le canard adverse
+     * @param action l'action à éxecuter (1 : attaque, 2 : capacité spéciale)
+     */
     private static void executerAction(Canard attaquant, Canard cible, int action) {
         boolean actionOk = true;
         int dureeStatut = attaquant.getDureeStatut();
@@ -250,12 +274,17 @@ public class Main {
         }
     }
 
+    /**
+     * Affiche l'état actuel des canards pour savoir où en est le combat
+     * @param canard1 le premier canard
+     * @param canard2 le second canard
+     */
     private static void afficherEtat(Canard canard1, Canard canard2) {
         System.out.println("\nEtat des canards :");
         System.out.println(canard1.getNom() + " - PV: " + canard1.getPv() + ", Attaque : " + canard1.getPpAttaque()
-                + " PP, Capacité spéciale : " + canard1.getPpCapacite());
+                + " PP, Capacité spéciale : " + canard1.getPpCapacite() + " PP.");
         System.out.println(canard2.getNom() + " - PV: " + canard2.getPv() + ", Attaque : " + canard2.getPpAttaque()
-                + " PP, Capacité spéciale : " + canard2.getPpCapacite());
+                + " PP, Capacité spéciale : " + canard2.getPpCapacite() + " PP.");
         System.out.println("--------------------------");
     }
 }
