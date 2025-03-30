@@ -10,7 +10,15 @@ public abstract class Canard {
 
     protected int attaque;
 
+    protected int ppAttaque;
+
+    protected int ppCapacite;
+
+    protected int vitesse;
+
     protected Statut statut;
+
+    protected int dureeStatut;
 
     protected TypeCanard type;
 
@@ -30,6 +38,10 @@ public abstract class Canard {
         return attaque;
     }
 
+    public int getVitesse() {
+        return vitesse;
+    }
+
     public Statut getStatut() {
         return statut;
     }
@@ -38,8 +50,13 @@ public abstract class Canard {
         return type;
     }
 
-    public int attaquer(Canard canardEnnemi) {
-        return (int) (attaque * TypeCanard.getMultiplicateur(type, canardEnnemi.getType()));
+    public int attaquer(Canard cible) {
+        if (ppAttaque == 0) {
+            System.out.println(nom + " n'a plus de point de pouvoir, il n'a pas pu attaquer");
+            return 0;
+        }
+        ppAttaque--;
+        return (int) (attaque * TypeCanard.getMultiplicateur(type, cible.getType()));
     }
 
     public void subirDegats(int degats) {
@@ -53,5 +70,10 @@ public abstract class Canard {
         return pv == 0;
     }
 
-    public abstract void CapaciteSpeciale();
+    public void appliquerEffet(Canard cible, Statut statut) {
+        cible.statut = statut;
+        dureeStatut = statut.duree;
+    }
+
+    public abstract void capaciteSpeciale(Canard cible);
 }

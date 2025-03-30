@@ -10,6 +10,11 @@ public class Main {
 
     public static void main(String[] args) {
 
+        canardList.add(new CanardEau("Canardo", 100, 20, 110));
+        canardList.add(new CanardFeu("Confit", 80, 30, 130));
+        canardList.add(new CanardGlace("Glanard", 90, 25, 100));
+        canardList.add(new CanardVent("Tornard", 90, 20, 120));
+
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
 
@@ -46,7 +51,7 @@ public class Main {
         scanner.close();
     }
 
-    public static void CreerCanard() {
+    private static void CreerCanard() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("veuillez remplir les informations suivantes : ");
@@ -65,6 +70,12 @@ public class Main {
             attaque = scanner.nextInt();
         }
 
+        int vitesse = 0;
+        while (vitesse <= 0) {
+            System.out.print("Vitesse (nombre supérieur à 0) : ");
+            vitesse = scanner.nextInt();
+        }
+
         int type = 0;
         while (type <= 0 || type > 4) {
             System.out.println("Type : ");
@@ -77,25 +88,25 @@ public class Main {
 
         switch (type) {
             case 1:
-                CanardEau canardEau = new CanardEau(nom, pv, attaque);
+                CanardEau canardEau = new CanardEau(nom, pv, attaque, vitesse);
                 canardList.add(canardEau);
                 break;
             case 2:
-                CanardFeu canardFeu = new CanardFeu(nom, pv, attaque);
+                CanardFeu canardFeu = new CanardFeu(nom, pv, attaque, vitesse);
                 canardList.add(canardFeu);
                 break;
             case 3:
-                CanardGlace canardGlace = new CanardGlace(nom, pv, attaque);
+                CanardGlace canardGlace = new CanardGlace(nom, pv, attaque, vitesse);
                 canardList.add(canardGlace);
                 break;
             case 4:
-                CanardVent canardVent = new CanardVent(nom, pv, attaque);
+                CanardVent canardVent = new CanardVent(nom, pv, attaque, vitesse);
                 canardList.add(canardVent);
                 break;
         }
     }
 
-    public static void Bataille() {
+    private static void Bataille() {
         Scanner scanner = new Scanner(System.in);
         int indexCanard1 = -1;
         int indexCanard2 = -1;
@@ -123,5 +134,118 @@ public class Main {
 
         System.out.println("Les 2 canards sélectionnés pour la bataille sont : ");
         System.out.println(canard1.getNom() + " et " + canard2.getNom());
+
+        System.out.println("Début de la bataille : ");
+        while (!canard1.estKo() && !canard2.estKo()) {
+
+            int actionCanard1 = 0;
+            while (actionCanard1 <= 0 || actionCanard1 > 2) {
+                System.out.println("Sélectionnez l'action de " + canard1.getNom());
+                System.out.println("1. Attaquer");
+                System.out.println("2. Utiliser la capacité spéciale");
+                actionCanard1 = scanner.nextInt();
+            }
+
+            int actionCanard2 = 0;
+            while (actionCanard2 <= 0 || actionCanard2 > 2) {
+                System.out.println("Sélectionnez l'action de " + canard2.getNom());
+                System.out.println("1. Attaquer");
+                System.out.println("2. Utiliser la capacité spéciale");
+                actionCanard2 = scanner.nextInt();
+            }
+
+            Canard premier, second;
+            int actionPremier, actionSecond;
+
+            if (canard1.getVitesse() >= canard2.getVitesse()) {
+                premier = canard1;
+                second = canard2;
+                actionPremier = actionCanard1;
+                actionSecond = actionCanard2;
+            } else {
+                premier = canard2;
+                second = canard1;
+                actionPremier = actionCanard2;
+                actionSecond = actionCanard1;
+            }
+
+            executerAction(premier, second, actionPremier);
+            afficherEtat(canard1, canard2);
+
+            if (second.estKo()) {
+                System.out.println(second.getNom() + " est KO !");
+                break;
+            }
+
+            executerAction(second, premier, actionSecond);
+            afficherEtat(canard1, canard2);
+        }
+
+        if (canard1.estKo()) {
+            System.out.println(canard2.getNom() + " remporte la bataille !");
+        } else {
+            System.out.println(canard1.getNom() + " remporte la bataille !");
+        }
     }
+
+    private static void executerAction(Canard attaquant, Canard cible, int action) {
+        boolean actionOk = true;
+        switch (attaquant.getStatut()) {
+            case GEL:
+                if (attaquant.getStatut().duree == 0) {
+                    System.out.println(attaquant.getNom() + " n'est plus gelé");
+                    attaquant.appliquerEffet(attaquant, Statut.AUCUN);
+                } else {
+                    actionOk = false;
+                    attaquant.getStatut().duree--;
+                    System.out.println(attaquant.getNom() + " est gelé, il n'a pas pu attaquer");
+                }
+                break;
+            case BRULE:
+                if (attaquant.getStatut().duree == 0) {
+                    System.out.println(attaquant.getNom() + " n'est plus brulé");
+                    attaquant.appliquerEffet(attaquant, Statut.AUCUN);
+                } else {
+                    attaquant.getStatut().duree--;
+                    attaquant.subirDegats(10);
+                    System.out.println(attaquant.getNom() + " est brulé, il subit des dégâts");
+                }
+            case PARALISE:
+                if (attaquant.getStatut().duree == 0) {
+                    System.out.println(attaquant.getNom() + " n'est plus paralysé");
+                    attaquant.appliquerEffet(attaquant, Statut.AUCUN);
+                } else {
+                    attaquant.getStatut().duree--;
+                    if (Math.random() < 0.5) {
+                        actionOk = false;
+                        System.out.println(attaquant.getNom() + " est paralysé, il n'a pas pu attaquer");
+                    }
+                }
+            case AUCUN:
+                break;
+        }
+
+        if (actionOk) {
+            if (action == 1) {
+                int degats = attaquant.attaquer(cible);
+                System.out.println(attaquant.getNom() + " attaque " + cible.getNom());
+                if (Math.random() < 0.1) {
+                    degats *= 2;
+                    System.out.println("Coup critique !");
+                }
+                cible.subirDegats(degats);
+            } else if (action == 2) {
+                System.out.println(attaquant.getNom() + " utilise sa capacité spéciale");
+                attaquant.capaciteSpeciale(cible);
+            }
+        }
+    }
+
+    private static void afficherEtat(Canard canard1, Canard canard2) {
+        System.out.println("\nEtat des canards :");
+        System.out.println(canard1.getNom() + " - PV: " + canard1.getPv());
+        System.out.println(canard2.getNom() + " - PV: " + canard2.getPv());
+        System.out.println("--------------------------");
+    }
+
 }
