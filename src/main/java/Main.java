@@ -12,7 +12,7 @@ public class Main {
 
         canardList.add(new CanardEau("Canardo", 100, 20, 110));
         canardList.add(new CanardFeu("Confit", 80, 30, 130));
-        canardList.add(new CanardGlace("Glanard", 90, 25, 100));
+        canardList.add(new CanardGlace("Glaglanard", 90, 25, 100));
         canardList.add(new CanardVent("Tornard", 90, 20, 120));
         canardList.add(new CanardElectrique("Elecanard", 100, 20, 120));
 
