@@ -10,11 +10,15 @@ public abstract class Canard {
 
     protected int attaque;
 
+    protected int attaqueDefaut;
+
     protected int ppAttaque;
 
     protected int ppCapacite;
 
     protected int vitesse;
+
+    protected int vitesseDefaut;
 
     protected Statut statut;
 
@@ -28,10 +32,6 @@ public abstract class Canard {
 
     public int getPv() {
         return pv;
-    }
-
-    public int getPvMax() {
-        return pvMax;
     }
 
     public int getAttaque() {
@@ -84,12 +84,21 @@ public abstract class Canard {
 
     public void appliquerEffet(Canard cible, Statut statut) {
         cible.statut = statut;
-        dureeStatut = statut.duree;
+        cible.dureeStatut = statut.duree;
     }
 
     public abstract void capaciteSpeciale(Canard cible);
 
     public void setDureeStatut(int duree) {
         this.dureeStatut = duree;
+    }
+
+    public void reinitialisation() {
+        this.pv = pvMax;
+        this.attaque = attaqueDefaut;
+        this.vitesse = vitesseDefaut;
+        this.ppAttaque = 15;
+        this.ppCapacite = 5;
+        this.statut = Statut.AUCUN;
     }
 }

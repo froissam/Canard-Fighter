@@ -7,7 +7,9 @@ public class CanardGlace extends Canard {
         this.pv = pv;
         this.pvMax = pv;
         this.attaque = attaque;
+        this.attaqueDefaut = attaque;
         this.vitesse = vitesse;
+        this.vitesseDefaut = vitesse;
         this.ppAttaque = 15;
         this.ppCapacite = 5;
         this.statut = Statut.AUCUN;

@@ -14,13 +14,14 @@ public class Main {
         canardList.add(new CanardFeu("Confit", 80, 30, 130));
         canardList.add(new CanardGlace("Glanard", 90, 25, 100));
         canardList.add(new CanardVent("Tornard", 90, 20, 120));
+        canardList.add(new CanardElectrique("Elecanard", 100, 20, 120));
 
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
 
         while (choice != 3) {
 
-            System.out.println("Bienvenue dans Canard Fighter Simulator !");
+            System.out.println("\nBienvenue dans Canard Fighter Simulator !");
 
             System.out.println("1. Créer un canard");
             System.out.println("2. Lancer une bataille");
@@ -77,12 +78,13 @@ public class Main {
         }
 
         int type = 0;
-        while (type <= 0 || type > 4) {
+        while (type <= 0 || type > 5) {
             System.out.println("Type : ");
             System.out.println("1. Eau");
             System.out.println("2. Feu");
             System.out.println("3. Glace");
             System.out.println("4. Vent");
+            System.out.println("5. Electrique");
             type = scanner.nextInt();
         }
 
@@ -173,7 +175,6 @@ public class Main {
             afficherEtat(canard1, canard2);
 
             if (second.estKo()) {
-                System.out.println(second.getNom() + " est KO !");
                 break;
             }
 
@@ -182,10 +183,15 @@ public class Main {
         }
 
         if (canard1.estKo()) {
+            System.out.println(canard1.getNom() + " est KO");
             System.out.println(canard2.getNom() + " remporte la bataille !");
         } else {
+            System.out.println(canard2.getNom() + " est KO");
             System.out.println(canard1.getNom() + " remporte la bataille !");
         }
+
+        canard1.reinitialisation();
+        canard2.reinitialisation();
     }
 
     private static void executerAction(Canard attaquant, Canard cible, int action) {
@@ -211,6 +217,7 @@ public class Main {
                     attaquant.subirDegats(10);
                     System.out.println(attaquant.getNom() + " souffre de brûlure");
                 }
+                break;
             case PARALYSIE:
                 if (dureeStatut == 0) {
                     System.out.println(attaquant.getNom() + " n'est plus paralysé");
@@ -222,6 +229,7 @@ public class Main {
                         System.out.println(attaquant.getNom() + " est paralysé, il n'a pas pu attaquer");
                     }
                 }
+                break;
             case AUCUN:
                 break;
         }
@@ -250,5 +258,4 @@ public class Main {
                 + " PP, Capacité spéciale : " + canard2.getPpCapacite());
         System.out.println("--------------------------");
     }
-
 }
